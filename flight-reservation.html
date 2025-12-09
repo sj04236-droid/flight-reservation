@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>자동완성 출발지</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .suggestion-box {
+      max-height: 250px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+    }
+    .suggestion-item:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 p-6">
+  <div class="max-w-md mx-auto">
+    <label class="block mb-2 font-semibold">출발지 선택</label>
+    <input id="airportInput" type="text" placeholder="예: ICN 인천" class="w-full p-2 border rounded" oninput="showSuggestions()" onclick="showSuggestions()" autocomplete="off" />
+    
+    <!-- 추천 목록 박스 -->
+    <div id="suggestions" class="hidden bg-white rounded shadow-md mt-1 p-2 suggestion-box z-10 relative"></div>
+  </div>
+
+  <script>
+    // 도시 데이터
+    const cityList = [
+      "ICN 인천", "GMP 김포", "CJU 제주", "PUS 부산",
+      "HND 도쿄(하네다)", "NRT 도쿄(나리타)", "KIX 오사카", "FUK 후쿠오카",
+      "SHA 상하이", "PEK 베이징", "TPE 타이페이", "BKK 방콕", "SIN 싱가포르", "DAD 다낭",
+      "LHR 런던", "CDG 파리", "FRA 프랑크푸르트", "FCO 로마",
+      "JFK 뉴욕", "LAX 로스앤젤레스", "SFO 샌프란시스코", "YVR 밴쿠버", "ORD 시카고"
+    ];
+
+    const input = document.getElementById('airportInput');
+    const suggestionsBox = document.getElementById('suggestions');
+
+    // 추천 도시 필터링
+    function showSuggestions() {
+      const keyword = input.value.toLowerCase();
+      const matched = cityList.filter(city => city.toLowerCase().includes(keyword));
+
+      if (matched.length === 0 || keyword === "") {
+        suggestionsBox.classList.add("hidden");
+        return;
+      }
+
+      const html = matched.map(city => `
+        <div class="suggestion-item px-2 py-1 cursor-pointer" onclick="selectCity('${city}')">${city}</div>
+      `).join("");
+
+      suggestionsBox.innerHTML = html;
+      suggestionsBox.classList.remove("hidden");
+    }
+
+    // 도시 클릭 시 input에 반영
+    function selectCity(city) {
+      input.value = city;
+      suggestionsBox.classList.add("hidden");
+    }
+
+    // 외부 클릭 시 숨김
+    document.addEventListener('click', (e) => {
+      if (!suggestionsBox.contains(e.target) && e.target !== input) {
+        suggestionsBox.classList.add("hidden");
+      }
+    });
+  </script>
+</body>
+</html>
