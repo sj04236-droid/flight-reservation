@@ -126,7 +126,7 @@
       formData.forEach((v, k) => data[k] = v);
 
       try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbyabqq9tBQqWLqwouShBrqgnunMrhPyi44lcqAKOdfNhfj129vvqg9aUT8SjwN8UF-F/exec", {
+        const response = await fetch("https://script.google.com/macros/library/d/1etu9c4vM9aye9YHecpSxXcwwdOKxsvPVYqJUAALzkNL74uuAcsuZfSZO/3", {
           method: "POST",
           body: new URLSearchParams(data)
         });
@@ -144,3 +144,4 @@
   </script>
 </body>
 </html>
+
